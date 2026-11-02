@@ -1,18 +1,38 @@
 package github.io.tnpb_1st.blogapi.entity;
 
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
+@Entity
+@Table(name = "tb_post")
 public class Post {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(name="title", nullable = false)
     private String title;
+    @Column(name="content", nullable = false)
     private String content;
+    @Column(name="category", nullable = false)
     private Category category;
+    @Column(name="tags", nullable = false)
     private List<String> tags;
+    private LocalDateTime publishedAt;
+    private LocalDateTime updatedAt;
+
+    public Post() {
+    }
 
     public Post(String title, String content, Category category, List<String> tags) {
         this.title = title;
         this.content = content;
         this.category = category;
         this.tags = tags;
+        this.publishedAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public String getTitle() {
@@ -45,6 +65,31 @@ public class Post {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getPublishedAt() {
+        return publishedAt;
+    }
+
+    public void setPublishedAt(LocalDateTime publishedAt) {
+        this.publishedAt = publishedAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
