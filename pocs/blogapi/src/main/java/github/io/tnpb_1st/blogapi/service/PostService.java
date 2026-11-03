@@ -21,6 +21,10 @@ public class PostService {
         return postRepository.findAll();
     }
 
+    public List<Post> search(String term) {
+        return postRepository.search(term);
+    }
+
     public Post findById(Integer id) {
         return postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException(id));

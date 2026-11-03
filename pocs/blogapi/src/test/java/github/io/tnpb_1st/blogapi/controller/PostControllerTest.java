@@ -57,6 +57,22 @@ class PostControllerTest {
     }
 
     @Test
+    void searchPosts_returns200WithMatchingPosts() throws Exception {
+        when(postService.search("java")).thenReturn(List.of(samplePost(1)));
+
+        mockMvc.perform(get("/posts/search").param("term", "java"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].title").value("My title"));
+    }
+
+    @Test
+    void searchPosts_withoutTerm_returns400() throws Exception {
+        mockMvc.perform(get("/posts/search"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void getPostById_whenFound_returns200WithPost() throws Exception {
         when(postService.findById(1)).thenReturn(samplePost(1));
 

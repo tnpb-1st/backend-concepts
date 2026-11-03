@@ -16,6 +16,7 @@ public class Post {
     private String title;
     @Column(name="content", nullable = false)
     private String content;
+    @Enumerated(EnumType.STRING)
     @Column(name="category", nullable = false)
     private Category category;
     @Column(name="tags", nullable = false)

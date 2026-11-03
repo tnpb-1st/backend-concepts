@@ -27,6 +27,11 @@ public class PostController {
         return postService.findAll();
     }
 
+    @GetMapping("search")
+    public List<Post> searchPosts(@RequestParam String term) {
+        return postService.search(term);
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<?> getPostById(@PathVariable Integer id) {
         try {
