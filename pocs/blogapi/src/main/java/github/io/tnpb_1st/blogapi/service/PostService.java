@@ -30,6 +30,11 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    public void deletePost(Integer id) {
+        Post post = findById(id);
+        postRepository.delete(post);
+    }
+
     public void validatePost(Post post) {
         validateTitle(post);
         validateContent(post);

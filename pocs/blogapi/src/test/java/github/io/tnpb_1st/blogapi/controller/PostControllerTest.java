@@ -16,10 +16,13 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -100,6 +103,24 @@ class PostControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.field").value("title"))
                 .andExpect(jsonPath("$.message").value("Post title must not be empty"));
+    }
+
+    @Test
+    void deletePost_whenFound_returns204WithEmptyBodyAndDeletes() throws Exception {
+        mockMvc.perform(delete("/posts/1"))
+                .andExpect(status().isNoContent())
+                .andExpect(content().string(""));
+
+        verify(postService).deletePost(1);
+    }
+
+    @Test
+    void deletePost_whenMissing_returns404WithMessage() throws Exception {
+        doThrow(new PostNotFoundException(99)).when(postService).deletePost(99);
+
+        mockMvc.perform(delete("/posts/99"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Post with id 99 not found"));
     }
 
     @Test

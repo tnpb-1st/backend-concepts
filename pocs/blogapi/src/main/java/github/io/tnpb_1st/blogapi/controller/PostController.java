@@ -69,6 +69,7 @@ public class PostController {
     public ResponseEntity<?> deletePost(@PathVariable Integer id) {
         try {
             postService.findById(id);
+            postService.deletePost(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }  catch (PostNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", e.getMessage()));
